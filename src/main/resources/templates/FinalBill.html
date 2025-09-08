@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Final Bill</title>
+<style>
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important; 
+    print-color-adjust: exact !important;         
+  }
+}
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+@media print {
+  img {
+    width: 100% !important;
+    max-width: 700px !important;
+    height: auto !important;
+  }
+}
+table {
+  width: 80%;
+  margin: auto;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #666;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #f2f2f2;
+  color: #000;
+  font-weight: bold;
+}
+td[colspan="5"] {
+  background-color: #fff9e6;
+  font-weight: bold;
+  padding: 3px 5px;
+  height: 20px;
+  line-height: 16px;
+}
+h2 {
+  text-align: center;
+  color: green;
+}
+.group-row {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: left;
+  color: blue;
+}
+.brand-label {
+  margin-left: 8px;
+  display: inline-block;
+  color: hotpink;
+}
+.group-row td {
+  padding-left: 55px;
+}
+.no-border-table {
+  border: none;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+.no-border-table td {
+  border: none;
+  padding: 0;
+  background-color: transparent;
+}
+</style>
+</head>
+<body>
+
+<div style="text-align:center;">
+  <img th:src="@{/images/logo.png}" alt="Company Logo"
+       style="width: 100%; max-width: 1200px; height: auto;" />
+</div>
+<br>
+
+<div style="display: flex; justify-content: space-between; align-items: flex-start; margin: 20px 160px 30px 160px; font-size: 16px; font-weight: bold;">
+    <div>
+        <div><span style="color: red;" th:text="${hospitalName}"></span></div>
+        <div><span style="color: blue;" th:text="${doctorName}"></span></div>
+        <div th:text="${addears}"></div>
+    </div>
+    <div>
+        <div>Date: <span th:text="${billDate}"></span></div>
+        <div>GDTIN: <span th:text="${GDTIN}"></span></div>
+    </div>
+</div>
+
+
+<table id="billTable">
+    <tr>
+        <th>S.No</th>   
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+    </tr>
+
+    <tr th:if="${#lists.isEmpty(finalData)}">
+        <td colspan="5" style="color:red; font-weight:bold; text-align:center;">
+            ⚠️ No materials available to generate bill.
+        </td>
+    </tr>
+    
+        <tr th:each="item, stat : ${finalData}">
+        <!-- Serial No -->
+        <td th:text="${stat.index + 1}"></td>
+        <!-- Item Name -->
+        <td th:text="${item.items}"></td>
+        <!-- Quantity -->
+        <td th:text="${item.quantity}"></td>
+        <!-- Price (2 decimals) -->
+        <td th:text="${#numbers.formatDecimal(item.price, 0, 2)}"></td>
+        <!-- Total = quantity * price -->
+        <td th:text="${#numbers.formatDecimal(item.quantity * item.price, 0, 2)}"></td>
+    </tr>
+
+    <!-- Footer: Totals -->
+    <tfoot>
+        <tr>
+            <td colspan="4" style="text-align: right; font-weight: bold;">
+                Total Price (Before GST)
+            </td>
+            <td th:text="${#numbers.formatDecimal(totalAmount, 0, 2)}"></td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right; font-weight: bold;">
+                GST @ 18%
+            </td>
+            <td th:text="${#numbers.formatDecimal(totalAmount * 0.18, 0, 2)}"></td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: right; font-weight: bold;">
+                Grand Total (Including GST)
+            </td>
+            <td th:text="${#numbers.formatDecimal(totalAmount + (totalAmount * 0.18), 0, 2)}"></td>
+        </tr>
+
+        <!-- Terms & Conditions -->
+        <tr class="no-border-table" width="100%">
+            <td colspan="5" style="padding: 10px; text-align: justify;"><br>
+                <h4 style="color: red; margin: 0;">TERMS & CONDITIONS</h4>
+                <h5 style="color: black; margin: 0;">
+                    1. 1 Year Warranty In All Accessories <br>
+                    2. Payment 60% Done <br>
+                    3. After Material Delivery 20% <br>
+                    4. Completion Work 20%
+                </h5>
+
+                <h4 style="color: green; margin: 10px 0 0 0;">ACCOUNT DETAILS</h4>
+                <h5 style="color: blue; margin: 0;">SREE VAISHNAVI ENTERPRISES</h5>
+                <h5 style="color: black; margin: 0;">
+                    Account No : 141911010000002 <br>
+                    IFSC Code : UBIN0814199 <br>
+                    Branch : Kushaiguda, Ecil Post, <br>
+                    Nagarjuna Nagar Colony, Hyd-500062.
+                </h5>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script>
+function downloadExcel() {
+    const table = document.getElementById('billTable');
+    if (!table) {
+        alert("Table not found!");
+        return;
+    }
+    const workbook = XLSX.utils.table_to_book(table, { sheet: "Final Bill" });
+    XLSX.writeFile(workbook, 'Final_Bill.xlsx');
+}
+</script>
+
+<div class="no-print" style="text-align: center; margin-top: 20px;">
+    <button onclick="window.print()" style="padding: 10px 25px;">🖨️ Print</button>
+</div>
+
+<div class="no-print" style="text-align: center; margin-top: 10px;">
+    <button onclick="downloadExcel()" style="padding: 10px 25px;">⬇️ Download Excel (.xlsx)</button>
+</div>
+
+</body>
+</html>
