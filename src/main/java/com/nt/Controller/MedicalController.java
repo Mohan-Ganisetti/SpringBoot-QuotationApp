@@ -36,12 +36,7 @@ public class MedicalController {
 	public String openForm() {
 		System.out.println("Form page Is Opend");
 		
-	    return "welcome"; // JSP or HTML file name (without extension)
-	}
-
-	@GetMapping("/thymeleafWelcome")
-	public String thymeleafWelcome() {
-	    return "welcome"; // Will use welcome.html in templates
+	    return "MapdataForm"; // JSP or HTML file name (without extension)
 	}
 
 	@PostMapping("/save") // lowercase everywhere
@@ -240,8 +235,10 @@ public String Colletdata(
     
         Model model) {
 	
-	model.addAttribute("doctorName", doctorName);
-	model.addAttribute("hospitalName", hospitalName);
+	String doctorNameText = doctorName instanceof List ? String.join(" ", doctorName) : doctorName.toString();
+	String hospitalNameText = hospitalName instanceof List ? String.join(" ", hospitalName) : hospitalName.toString();
+	model.addAttribute("doctorName", doctorNameText);
+	model.addAttribute("hospitalName", hospitalNameText);
 	model.addAttribute("billDate", billDate);
 	model.addAttribute("addears", addears);
 	model.addAttribute("GDTIN", GDTIN);
@@ -532,5 +529,3 @@ public String Colletdata(
 
 }
 	
-
-

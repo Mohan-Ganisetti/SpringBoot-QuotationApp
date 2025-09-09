@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>Final Bill</title>
 <style>
+
 @media print {
   * {
     -webkit-print-color-adjust: exact !important; 
@@ -76,13 +77,24 @@ h2 {
   padding: 0;
   background-color: transparent;
 }
+ .grand-total-row {
+        background-color: #d4edda; /* light green */
+        font-weight: bold;
+        height: 40px;              /* increase row height */
+        text-align: right;
+        border: 2px solid #28a745; /* green border */
+        border-radius: 8px;        /* rounded corners */
+    }
+    .grand-total-row td {
+        padding: 15px;             /* space inside cells */
+    }
 </style>
 </head>
 <body>
 
 <div style="text-align:center;">
   <img src="${pageContext.request.contextPath}/images/logo.png" alt="Company Logo"
-       style="width: 100%; max-width: 1200px; height: auto;" />
+       style="width: 100%; max-width: 1200px; height: 135px; padding-top: 10px" />
 </div>
 <br>
 
@@ -327,7 +339,8 @@ h2 {
     </c:forEach>
 
     <tfoot>
-        <tr>
+    
+        <tr >
             <td colspan="4" style="text-align: right; font-weight: bold;">Total Price (Before GST)</td>
             <td><fmt:formatNumber value="${totalAmount}" maxFractionDigits="2"/></td>
         </tr>
@@ -336,7 +349,7 @@ h2 {
             <td colspan="4" style="text-align: right; font-weight: bold;">GST @ 18%</td>
             <td><fmt:formatNumber value="${gst}" maxFractionDigits="2"/></td>
         </tr>
-        <tr>
+        <tr class="grand-total-row">
             <td colspan="4" style="text-align: right; font-weight: bold;">Grand Total (Including GST)</td>
             <td><fmt:formatNumber value="${totalAmount + gst}" maxFractionDigits="2"/></td>
         </tr>
