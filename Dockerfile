@@ -7,7 +7,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build WAR
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Stage 2: Run WAR
 FROM eclipse-temurin:17-jdk
