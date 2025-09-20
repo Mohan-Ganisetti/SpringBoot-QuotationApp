@@ -1,46 +1,46 @@
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Saved Materials</title>
+    <title>Show Materials</title>
 </head>
 <body>
+<h2>Medicals Data</h2>
 
-<c:if test="${not empty medical}">
-    <h3>Saved Materials:</h3>
-    <table border="1" cellpadding="5">
-        <tr>
-            <th>Material Type</th>
-            <th>Material</th>
-            <th>Action</th>
-        </tr>
-
-        <!-- Loop over all Medicals objects -->
-        <c:forEach var="med" items="${medical}">
-            <!-- Loop over the map inside each Medicals -->
-            <c:forEach var="entry" items="${med.entry}">
-                <!-- Loop over the list of items for each type -->
-                <c:forEach var="item" items="${entry.value}">
-                    <tr>
-                        <td>${entry.key}</td>
-                        <td>${item}</td>
-                        <td>
-                            <a href="${pageContext.request.contextPath}/delete?type=${entry.key}&item=${item}"> Delete</a>                                                    
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:forEach>
-        </c:forEach>
+<!-- check if map is not empty -->
+<div th:if="${materials != null and !materials.isEmpty()}">
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Material Type</th>
+                <th>Items</th>
+                <th>Action </th>
+            </tr>
+        </thead>
+       
+        <tbody>
+    <th:block th:each="entry : ${materials.entrySet()}">
+        <th:block th:each="val : ${entry.value}">
+            <tr>
+                <td th:text="${entry.key}"></td>
+                <td th:text="${val}"></td>
+                <td>
+                    <a th:href="@{/delete(type=${entry.key}, item=${val})}"
+                       onclick="return confirm('Are you sure you want to delete this item?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+        </th:block>
+    </th:block>
+</tbody>
 
     </table>
-</c:if>
+</div>
 
-<c:if test="${not empty message}">
-    <p style="color:green">${message}</p>
-</c:if>
+<!-- empty case -->
+<div th:if="${materials == null or materials.isEmpty()}">
+    <p>No materials found.</p>
+</div>
 
 </body>
 </html>
