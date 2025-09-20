@@ -1,74 +1,46 @@
+<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Saved Materials</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .message {
-            color: green;
-            text-align: center;
-            margin-top: 20px;
-        }
-        a.delete-link {
-            color: red;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        a.delete-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Saved Materials</title>
 </head>
 <body>
 
-<div th:if="${medical != null}">
-    <h3 style="text-align:center;">Saved Materials:</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Material Type</th>
-                <th>Material</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-     <tbody>
-    <!-- Loop over each medical -->
-    <th:block th:each="med : ${medical}">
-        <!-- Loop over each entry in the map -->
-        <th:block th:each="entry : ${med.entry}">
-            <!-- Loop over each item in the list -->
-            <tr th:each="item : ${entry.value}">
-                <td th:text="${entry.key}"></td>
-                <td th:text="${item}"></td>
-                <td>
-                    <a th:href="@{/delete(type=${entry.key}, item=${item})}" class="delete-link">Delete</a>
-                </td>
-            </tr>
-        </th:block>
-    </th:block>
-</tbody>
+<c:if test="${not empty medical}">
+    <h3>Saved Materials:</h3>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Material Type</th>
+            <th>Material</th>
+            <th>Action</th>
+        </tr>
+
+        <!-- Loop over all Medicals objects -->
+        <c:forEach var="med" items="${medical}">
+            <!-- Loop over the map inside each Medicals -->
+            <c:forEach var="entry" items="${med.entry}">
+                <!-- Loop over the list of items for each type -->
+                <c:forEach var="item" items="${entry.value}">
+                    <tr>
+                        <td>${entry.key}</td>
+                        <td>${item}</td>
+                        <td>
+                            <a href="${pageContext.request.contextPath}/delete?type=${entry.key}&item=${item}"> Delete</a>                                                    
+                        </td>
+                    </tr>
+                </c:forEach>
+            </c:forEach>
+        </c:forEach>
 
     </table>
-</div>
+</c:if>
 
-<div th:if="${message != null}" class="message">
-    <p th:text="${message}"></p>
-</div>
+<c:if test="${not empty message}">
+    <p style="color:green">${message}</p>
+</c:if>
 
 </body>
 </html>
