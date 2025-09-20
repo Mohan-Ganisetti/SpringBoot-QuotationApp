@@ -1,9 +1,6 @@
 
-<%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" language="java" %> 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Material Selection</title>
@@ -233,43 +230,99 @@ div.add-new-items a:hover {
 </head>
 <body>
 
-<form action="${pageContext.request.contextPath}/PostSelectedData" method="post">
+<form th:action="@{/PostSelectedData}" method="post">
 
 <div style="text-align:center; margin-bottom: 15px;">
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('copperTable')" /> Copper</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('outletTable')" /> Outlet</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('airDrierTable')" /> Air Drier</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('compressorsTable')" /> Compressors</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('controlPanelTable')" /> Control Panel</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('bedHeadPanelTable')" /> Bed Head Panel</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('cutOffValvesTable')" /> Cutoff Valves</label><br> <br> 
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('emergencyServicePointTable')" /> Emergency Point</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('boilsConvertionkitTable')" /> Boils Kit</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('flowMetersTable')" /> Flow Meters</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('vaccumJarsTable')" /> Vacuum Jars</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('vaccumTraleTable')" /> Vacuum Trale</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('gasAlaramTable')" /> Gas Alarm</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('maniFoldTable')" /> Manifold</label><br>
-    <label><input type="radio" name="materialTypeSelect" onclick="showTable('regulatorTable')" /> Regulator</label><br>
-    
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'Copper'" 
+               th:id="'copperRadio'" onclick="showTable('copperTable')" /> Copper
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'Outlet'" 
+               th:id="'outletRadio'" onclick="showTable('outletTable')" /> Outlet
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'AirDrier'" 
+               th:id="'airDrierRadio'" onclick="showTable('airDrierTable')" /> Air Drier
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'Compressors'" 
+               th:id="'compressorsRadio'" onclick="showTable('compressorsTable')" /> Compressors
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'ControlPanel'" 
+               th:id="'controlPanelRadio'" onclick="showTable('controlPanelTable')" /> Control Panel
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'BedHeadPanel'" 
+               th:id="'bedHeadPanelRadio'" onclick="showTable('bedHeadPanelTable')" /> Bed Head Panel
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'CutOffValves'" 
+               th:id="'cutOffValvesRadio'" onclick="showTable('cutOffValvesTable')" /> Cutoff Valves
+    </label><br><br> 
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'EmergencyServicePoint'" 
+               th:id="'emergencyRadio'" onclick="showTable('emergencyServicePointTable')" /> Emergency Point
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'BoilsConvertionkit'" 
+               th:id="'boilsKitRadio'" onclick="showTable('boilsConvertionkitTable')" /> Boils Kit
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'FlowMeters'" 
+               th:id="'flowMetersRadio'" onclick="showTable('flowMetersTable')" /> Flow Meters
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'VaccumJars'" 
+               th:id="'vaccumJarsRadio'" onclick="showTable('vaccumJarsTable')" /> Vacuum Jars
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'VaccumTrale'" 
+               th:id="'vaccumTraleRadio'" onclick="showTable('vaccumTraleTable')" /> Vacuum Trale
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'GasAlaram'" 
+               th:id="'gasAlaramRadio'" onclick="showTable('gasAlaramTable')" /> Gas Alarm
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'Manifold'" 
+               th:id="'manifoldRadio'" onclick="showTable('maniFoldTable')" /> Manifold
+    </label><br>
+
+    <label>
+        <input type="radio" name="materialTypeSelect" th:value="'Regulator'" 
+               th:id="'regulatorRadio'" onclick="showTable('regulatorTable')" /> Regulator
+    </label><br>
 </div>
+
 
 <!-- Brand checkboxes -->
 <!-- ------------------------------------------------------------------------------------------------------------------------------------------ -->
 <div id="copperBrandDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select Copper Brand:</label>   
-    <c:forEach var="item" items="${brandNames['Copper']}">
+    <label>Select Copper Brand:</label>
+    <div th:each="item : ${brandNames['Copper']}">
         <label style="margin-right: 20px;">
-            <input type="checkbox" name="copperBrands" value="${item}" />
-            ${item}
+            <input type="checkbox" name="copperBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </div>
 </div>
-
-<!-- Copper Table -->
-<table id="copperTable" class="material-table" style="display:none;">
+<table id="copperTable" style="display:none;">
     <thead>
-        <tr><th colspan="5">Copper Table</th></tr>
         <tr>
             <th>S.No</th>
             <th>Select</th>
@@ -279,32 +332,31 @@ div.add-new-items a:hover {
         </tr>
     </thead>
     <tbody>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Copper}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="copperMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="copperQuantities" /></td>
-                <td><input type="number" name="copperPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+        <tr th:each="item, iterStat : ${FindAll['Copper']}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td><input type="checkbox" name="copperMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="copperQuantities" /></td>
+            <td><input type="number" name="copperPrices" /></td>
+        </tr>
     </tbody>
 </table>
+
+
 
 <!-- Outlet Table -->
 <div id="OutletBrandDiv" style="display:none; text-align:center; margin-bottom: 15px;">
     <label>Select Outlet Brand:</label>   
-    <c:forEach var="item" items="${brandNames['Outlet']}">
+    <div th:each ="item : ${brandNames['Outlet']}">
         <label style="margin-right: 20px;">
-            <input type="checkbox" name="outletBrands" value="${item}" />
-            ${item}
+            <input type="checkbox" name="outletBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </div>>
 </div>
 
 <table id="outletTable"  class="material-table" style="display:none;">
+<thead>
     <tr><th colspan="5">Outlet Table</th></tr>
     <tr>
         <th>S.No</th>
@@ -313,418 +365,407 @@ div.add-new-items a:hover {
         <th>Quantity</th>
         <th>Price</th>
     </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Outlet}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="outletMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="outletQuantities" /></td>
-                <td><input type="number" name="outletPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    </thead>
+  <tbody>
+     <tr th:if="${FindAll['Outlet'] != null}" 
+    th:each="item, iterStat : ${FindAll['Outlet']}">
+    <td th:text="${iterStat.index + 1}"></td>
+    <td><input type="checkbox" name="outletMaterials" th:value="${item}" /></td>
+    <td th:text="${item}"></td>
+    <td><input type="number" name="outletQuantities" /></td>
+    <td><input type="number" name="outletPrices" /></td>
+</tr>
+
+    </tbody>
 </table>
 
 <!-- AirDrier Table -->
 <div id="airDrierDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select airDrier Brand:</label>   
-    <c:forEach var="item" items="${brandNames['AirDrier']}">
+    <label>Select Air Drier Brand:</label>
+    <div th:each="item : ${brandNames['AirDrier']}">
         <label style="margin-right: 20px;">
-            <input type="checkbox" name="airDrierBrands" value="${item}" />
-            ${item}
+            <input type="checkbox" name="airDrierBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </div>
 </div>
 
-<table id="airDrierTable"  class="material-table" style="display:none;">
-    <tr><th colspan="5">AirDrier Table</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
+<table id="airDrierTable" class="material-table" style="display:none;">
+    <thead>
+        <tr><th colspan="5">Air Drier Table</th></tr>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+  <tbody>
+    <tr th:if="${FindAll['Airdrier'] != null}" 
+        th:each="item, iterStat : ${FindAll['Airdrier']}">
+        <td th:text="${iterStat.index + 1}"></td>
+        <td><input type="checkbox" name="airDrierMaterials" th:value="${item}" /></td>
+        <td th:text="${item}"></td>
+        <td><input type="number" name="airDrierQuantities" /></td>
+        <td><input type="number" name="airDrierPrices" /></td>
     </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Airdrier}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="airDrierMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="airDrierQuantities" /></td>
-                <td><input type="number" name="airDrierPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+</tbody>
+
 </table>
 
-<!-- Compressors Table -->
+<!-- ================== Compressors Brand and Table ================== -->
 <div id="compressorsDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select Compressors Brand:</label>   
-    <c:forEach var="item" items="${brandNames['Compressors']}">
+    <label>Select Compressors Brand:</label>
+    <div th:each="item : ${brandNames['Compressors']}">
         <label style="margin-right: 20px;">
-            <input type="checkbox" name="compressorsBrands" value="${item}" />
-            ${item}
+            <input type="checkbox" name="compressorsBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </div>
 </div>
 
-<table id="compressorsTable"  class="material-table" style="display:none;">
-    <tr><th colspan="5">Compressors Table</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
+<table id="compressorsTable" class="material-table" style="display:none;">
+    <thead>
+        <tr><th colspan="5">Compressors Table</th></tr>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+  <tbody>
+    <tr th:if="${FindAll['Compressors'] != null}" 
+        th:each="item, iterStat : ${FindAll['Compressors']}">
+        <td th:text="${iterStat.index + 1}"></td>
+        <td><input type="checkbox" name="compressorsMaterials" th:value="${item}" /></td>
+        <td th:text="${item}"></td>
+        <td><input type="number" name="compressorsQuantities" /></td>
+        <td><input type="number" name="compressorsPrices" /></td>
     </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Compressors}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="compressorsMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="compressorsQuantities" /></td>
-                <td><input type="number" name="compressorsPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
-</table>
+</tbody>
 
-<!-- ControlPanel Table -->
+</table>
+<!-- Control Panel Table -->
 <div id="controlPanelDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select controlPanel Brand:</label>   
-    <c:forEach var="item" items="${brandNames['ControlPanel']}">
-        <label style="margin-right: 20px;">
-            <input type="checkbox" name="controlPanelBrands" value="${item}" />
-            ${item}
+    <label>Select Control Panel Brand:</label>
+    <span th:each="item : ${brandNames['ControlPanel']}">
+        <label style="margin-right:20px;">
+            <input type="checkbox" name="controlPanelBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </span>
 </div>
 
-
-<table id="controlPanelTable"  class="material-table" style="display:none;">
-    <tr><th colspan="5">ControlPanel Table</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Controlpanel}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="controlPanelMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="controlPanelQuantities" /></td>
-                <td><input type="number" name="controlPanelPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+<table id="controlPanelTable" class="material-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Controlpanel']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="controlPanelMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="controlPanelQuantities" /></td>
+            <td><input type="number" name="controlPanelPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
-<!-- BedHeadPanel Table -->
+<!-- Bed Head Panel Table -->
 <div id="bedHeadPanelDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select controlPanel Brand:</label>   
-    <c:forEach var="item" items="${brandNames['BedHeadPanel']}">
-        <label style="margin-right: 20px;">
-            <input type="checkbox" name="bedHeadPanelBrands" value="${item}" />
-            ${item}
+    <label>Select Bed Head Panel Brand:</label>
+    <span th:each="item : ${brandNames['Bedheadpanel']}">
+        <label style="margin-right:20px;">
+            <input type="checkbox" name="bedHeadPanelBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </span>
 </div>
 
-
-<table id="bedHeadPanelTable"  class="material-table" style="display:none;">
-    <tr><th colspan="5">BedHeadPanel Table</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Bedheadpanel}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="bedHeadPanelMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="bedHeadPanelQuantities" /></td>
-                <td><input type="number" name="bedHeadPanelPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+<table id="bedHeadPanelTable" class="material-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['BedHeadPanel']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="bedHeadPanelMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="bedHeadPanelQuantities" /></td>
+            <td><input type="number" name="bedHeadPanelPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
-<!-- Cutoffvalves Table -->
+<!-- Cutoff Valves Table -->
 <div id="cutoffvalvesDiv" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select cutoffvalvesDiv Brand:</label>   
-    <c:forEach var="item" items="${brandNames['Cutoffvalves']}">
-        <label style="margin-right: 20px;">
-            <input type="checkbox" name="CutoffvalvesBrands" value="${item}" />
-            ${item}
+    <label>Select Cutoff Valves Brand:</label>
+    <span th:each="item : ${brandNames['Cutoffvalves']}">
+        <label style="margin-right:20px;">
+            <input type="checkbox" name="cutoffvalvesBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </span>
 </div>
 
-<table id="cutOffValvesTable">
-    <tr><th colspan="5">Cutoffvalves Table</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Cutoffvalves}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="cutoffvalvesMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="cutoffvalvesQuantities" /></td>
-                <td><input type="number" name="cutoffvalvesPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+<table id="cutOffValvesTable" class="material-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Cutoffvalves']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="cutoffvalvesMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="cutoffvalvesQuantities" /></td>
+            <td><input type="number" name="cutoffvalvesPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
 
-<!-- FlowMeters Table -->
-<div id="brandsAll" style="display:none; text-align:center; margin-bottom: 15px;">
-    <label>Select  Brands:</label>   
-    <c:forEach var="item" items="${brandNames}">
-        <label style="margin-right: 20px;">
-            <input type="checkbox" name="brandsAll" value="${item}" />
-            ${item}
+<!-- Flow Meters Table -->
+<div id="flowMetersBrandDiv" style="display:none; text-align:center; margin-bottom: 15px;">
+    <label>Select Brands:</label>
+    <span th:each="item : ${brandNames['Flowmeters']}">
+        <label style="margin-right:20px;">
+            <input type="checkbox" name="flowMetersBrands" th:value="${item}" />
+            <span th:text="${item}"></span>
         </label>
-    </c:forEach>
+    </span>
 </div>
 
 <table id="flowMetersTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">Flow Meters</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Flowmeters}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="flowMetersMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="flowMetersQuantities" /></td>
-                <td><input type="number" name="flowMetersPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Flowmeters']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="flowMetersMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="flowMetersQuantities" /></td>
+            <td><input type="number" name="flowMetersPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
-<!-- VacuumJars Table -->
+<!-- Vacuum Jars Table -->
 <table id="vaccumJarsTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">Vacuum Jars</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Vaccumjars}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="vaccumJarsMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="vaccumJarsQuantities" /></td>
-                <td><input type="number" name="vaccumJarsPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Vaccumjars']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="vaccumJarsMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="vaccumJarsQuantities" /></td>
+            <td><input type="number" name="vaccumJarsPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
-<!-- VaccumTrale Table -->
+<!-- Vacuum Trale Table -->
 <table id="vaccumTraleTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">Vacuum Trale</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Vaccumtrale}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="accumTraleMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="accumTraleQuantities" /></td>
-                <td><input type="number" name="accumTralePrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Vaccumtrale']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="vaccumTraleMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="vaccumTraleQuantities" /></td>
+            <td><input type="number" name="vaccumTralePrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
-
-<!-- GasAlaram Table -->
+<!-- Gas Alarm Table -->
 <table id="gasAlaramTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">Gas Alarm</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Gasalaram}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="gasAlaramMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="gasAlaramQuantities" /></td>
-                <td><input type="number" name="gasAlaramPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Gasalaram']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="gasAlaramMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="gasAlaramQuantities" /></td>
+            <td><input type="number" name="gasAlaramPrices" /></td>
+        </tr>
+    </tbody>
 </table>
+
 
 <!-- Manifold Table -->
 <table id="maniFoldTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">Manifold</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Manifold}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="maniFoldMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="maniFoldQuantities" /></td>
-                <td><input type="number" name="maniFoldPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Manifold']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="maniFoldMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="maniFoldQuantities" /></td>
+            <td><input type="number" name="maniFoldPrices" /></td>
+        </tr>
+    </tbody>
 </table>
- <!-- -------------------------------------------------------------------------------------------------------------------------------------------------  -->
-         <!-- ✅ regulator Table -->
+
+<!-- Regulator Table -->
 <table id="regulatorTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">regulator </th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
- <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Regulator}">        <tr>
-            <td>${s.index + 1}</td>
-            <td><input type="checkbox" name="regulatorMaterials" value="${item}" /></td>
-            <td>${item}</td>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Regulator']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="regulatorMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
             <td><input type="number" name="regulatorQuantities" /></td>
             <td><input type="number" name="regulatorPrices" /></td>
         </tr>
-    </c:forEach>
-    </c:forEach>
-</table>  
- <!-- -------------------------------------------------------------------------------------------------------------------------------------------------  -->
-        <!-- BoilsConvertionkit Table -->
-<table id="boilsConvertionkitTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">BoilsConvertionkit</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.BoilsConvertionkit}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="boilsConvertionkitMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="boilsConvertionkitQuantities" /></td>
-                <td><input type="number" name="boilsConvertionkitPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    </tbody>
 </table>
 
-<!-- EmergencyServicePoint Table -->
+<!-- BoilsConvertionkit Table -->
+<table id="boilsConvertionkitTable" class="material-table" style="display:none;">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['BoilsConvertionkit']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="boilsConvertionkitMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="boilsConvertionkitQuantities" /></td>
+            <td><input type="number" name="boilsConvertionkitPrices" /></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Emergency Service Point Table -->
 <table id="emergencyServicePointTable" class="material-table" style="display:none;">
-    <tr><th colspan="5">EmergencyServicePointTable</th></tr>
-    <tr>
-        <th>S.No</th>
-        <th>Select</th>
-        <th>Item</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
-    <c:forEach var="med" items="${FindAll}">
-        <c:forEach var="item" items="${med.entry.Emergencyservicepoint}" varStatus="s">
-            <tr>
-                <td>${s.index + 1}</td>
-                <td><input type="checkbox" name="emergencyMaterials" value="${item}" /></td>
-                <td>${item}</td>
-                <td><input type="number" name="emergencyQuantities" /></td>
-                <td><input type="number" name="emergencyPrices" /></td>
-            </tr>
-        </c:forEach>
-    </c:forEach>
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Select</th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="item, stat : ${FindAll['Emergencyservicepoint']}">
+            <td th:text="${stat.index + 1}"></td>
+            <td><input type="checkbox" name="emergencyMaterials" th:value="${item}" /></td>
+            <td th:text="${item}"></td>
+            <td><input type="number" name="emergencyQuantities" /></td>
+            <td><input type="number" name="emergencyPrices" /></td>
+        </tr>
+    </tbody>
 </table>
 
   
-  <!-- ------------------------------------------------------------------------------------------------------------------------------------------ -->
 
     <!-- ------------------------------------------------------------------------------------------------------------------------------------------ -->
-  
   <br>
-       <!-- Doctor, Hospital, Date Info -->
+<!-- Doctor, Hospital, Date Info -->
 <div style="text-align:center; margin-bottom: 20px;">
     <label>Doctor Name:</label>
-    <input type="text" name="doctorName"  />
+    <input type="text" name="doctorName" th:value="${doctorName}" />
     &nbsp;&nbsp;&nbsp;
     <label>Hospital Name:</label>
-    <input type="text" name="hospitalName"  />
+    <input type="text" name="hospitalName" th:value="${hospitalName}" />
     &nbsp;&nbsp;&nbsp;
     <label>Date:</label>
-    <input type="date" name="billDate"  />
+    <input type="date" name="billDate" th:value="${billDate}" />
     &nbsp;&nbsp;&nbsp;
     <label>Addears:</label>
-    <input type="text" name="addears"  />
+    <input type="text" name="addears" th:value="${addears}" />
     &nbsp;&nbsp;&nbsp;
     <label>GDTIN:</label>
-<input type="text" name="GDTIN"  />
+    <input type="text" name="GDTIN" th:value="${GDTIN}" />
 </div>
-
 
 <!-- Buttons -->
 <div class="btn-area">
     <button type="submit">Submit</button>
     <button type="button" onclick="resetForm()">Reset</button>
 </div>
-
 </form>
 
 <!-- Add New Items Link -->
 <div style="text-align:center; margin-top: 10px;">
-    <a href="${pageContext.request.contextPath}/addNew">Add New Items</a>
+    <a th:href="@{/addNew}">Add New Items</a>
 </div>
+
 
 <script>
     const tableIds = [
