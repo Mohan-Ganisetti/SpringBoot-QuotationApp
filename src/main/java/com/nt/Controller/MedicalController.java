@@ -26,6 +26,7 @@ import com.nt.Repository.MedicalRepository;
 
 import org.springframework.ui.Model;
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 @Controller
 public class MedicalController {
 
@@ -42,7 +43,7 @@ public class MedicalController {
 	@PostMapping("/save") // lowercase everywhere
 	public String save(@RequestParam String keyData,
 	                   @RequestParam String valueList,
-	                   Model model) {
+	                   Model model,Session session) {
 
 	    String normalizedKey = keyData.substring(0, 1).toUpperCase() + keyData.substring(1).toLowerCase();
 	    System.out.println("data ready to save with Key: " + normalizedKey);
@@ -80,6 +81,7 @@ public class MedicalController {
 	    
 	    model.addAttribute("medical", medicalRepository.findAll()); // pass the map, not entity
 	    model.addAttribute("message", "Data Saved");
+	   
 	
 	    return "redirect:/show";
 	}
@@ -108,9 +110,21 @@ public class MedicalController {
 	}
 
 	@GetMapping("/show")
-	public String showAll(Model model) {
-	    model.addAttribute("medical", medicalRepository.findAll());
-	    return "Show"; // This maps to /WEB-INF/pages/Show.jsp
+	public String showAll(Model model,HttpSession session) {
+
+		List<Medicals> list = medicalRepository.findAll();
+
+	    Map<String, List<String>> allMaterials = new HashMap<>();
+
+	    for(Medicals m : list) {
+	        if (m.getEntry() != null && !m.getEntry().isEmpty()) {
+	            allMaterials.putAll(m.getEntry());
+	        }
+	    }
+
+	    model.addAttribute("materials", allMaterials);
+
+	 return "Show"; // This maps to /WEB-INF/pages/Show.jsp
 	}
 
 	
@@ -133,7 +147,18 @@ public String MedicalForm(Model model) {
 	        );
 	        model.addAttribute("brandNames", brandNames);
 
-model.addAttribute("FindAll", medicalRepository.findAll());
+//model.addAttribute("FindAll", medicalRepository.findAll());
+List<Medicals> list = medicalRepository.findAll();
+
+Map<String, List<String>> allMaterials = new HashMap<>();
+
+for(Medicals m : list) {
+    if (m.getEntry() != null && !m.getEntry().isEmpty()) {
+        allMaterials.putAll(m.getEntry());
+    }
+}
+
+model.addAttribute("FindAll", allMaterials);
 
 	return "SelectionForm";
 	
@@ -518,12 +543,20 @@ public String Colletdata(
 	        }
 	    }
 
+	    double totalAmount = data.stream()
+	    	    .mapToDouble(i -> i.getQuantity() * i.getPrice())
+	    	    .sum();
+	    	double gst = totalAmount * 0.18;
+	    	double grandTotal = totalAmount + gst;
+
+	    	model.addAttribute("totalAmount", totalAmount);
+	    	model.addAttribute("gst", gst);
+	    	model.addAttribute("grandTotal", grandTotal);
+
 	
 	    model.addAttribute("finalData", data); // send to JSP
 	    return "FinalBill";
 	}
-
-
 
 
 
